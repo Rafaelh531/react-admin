@@ -9,15 +9,24 @@ import { alunos } from "../../data/alunos";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { useState } from "react";
-import Modal from "@mui/material/Modal";
-import Typography from "@mui/material";
 
 const DadosAluno = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [open, setOpen] = useState(false);
+
   const [openRegistration, setOpenRegistration] = useState(false);
-  const [openAnotherDialog, setOpenAnotherDialog] = useState(false);
+;
+
+  const [dialogData, setDialogData] = useState(null);
+
+  const handleOpenDialog = (rowData) => {
+    setDialogData(rowData);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogData(null);
+  };
+
 
   const handleOpenRegistration = () => {
     setOpenRegistration(true);
@@ -27,13 +36,7 @@ const DadosAluno = () => {
     setOpenRegistration(false);
   };
 
-  const handleOpenAnotherDialog = () => {
-    setOpenAnotherDialog(true);
-  };
 
-  const handleCloseAnotherDialog = () => {
-    setOpenAnotherDialog(false);
-  };
 
   const columns = [
     //{ field: "id", headerName: "id", flex: 0.5 },
@@ -67,103 +70,42 @@ const DadosAluno = () => {
       flex: 0.5,
       valueGetter: (data) => data.row.pai.nomeDoPai,
     },
+    
     {
-      field: "actions",
-      headerName: "",
+      field: 'actions',
+      headerName: '',
       width: 120,
-      headerAlign: "right", // Alinha o cabeçalho à direita
-      align: "right", // Alinha o conteúdo da célula à direita
+      headerAlign: 'right',
+      align: 'right',
       renderCell: (params) => {
+        const rowData = params.row;
+
         const handleOpen = () => {
-          setOpen(true);
+          handleOpenDialog(rowData);
         };
 
-        const handleClose = () => {
-          setOpen(false);
-        };
         return (
-          <Box>
-            <Button
-              onClick={handleOpenAnotherDialog}
-              variant="outlined"
-              color="primary"
-              style={{
-                border: "none",
-                borderRadius: "50%",
-                width: "36px",
-                height: "36px",
-                minWidth: "36px",
-                padding: 0,
-              }}
-            >
-              <VisibilityIcon />
-            </Button>
-            <CustomizedDialogs
-              open={openAnotherDialog}
-              onClose={handleCloseAnotherDialog}
-              title="103"
-            >
-              <RegistrationForm />
-            </CustomizedDialogs>
-
-            {/* <Button variant="outlined" color="primary"       style={{
-            border: 'none',
-            borderRadius: '50%',
-            width: '36px',
-            height: '36px',
-            minWidth: '36px',
-            padding: 0,
-          }}
-          onClick={handleOpen}>
-            
+          <Button
+            onClick={handleOpen}
+            variant="outlined"
+            color="primary"
+            style={{
+              border: 'none',
+              borderRadius: '50%',
+              width: '36px',
+              height: '36px',
+              minWidth: '36px',
+              padding: 0,
+            }}
+          >
+            <VisibilityIcon />
           </Button>
-          
-
-          
-
-          <Button variant="outlined" color="primary"       style={{
-            border: 'none',
-            borderRadius: '50%',
-            width: '36px',
-            height: '36px',
-            minWidth: '36px',
-            padding: 0,
-          }}>
-          <ModeEditIcon />
-        </Button> */}
-          </Box>
         );
       },
     },
-
-    // { field: "registrarId", headerName: "Registar ID" },
-    // {
-    //   field: "name",
-    //   headerName: "Name",
-    //   flex: 1,
-    //   cellClassName: "name-column--cell",
-    // },
-    // {
-    //   field: "age",
-    //   headerName: "Age",
-    //   type: "number",
-    //   headerAlign: "left",
-    //   align: "left",
-    // },
-    // { field: "phone", headerName: "Phone Number", flex: 1 },
-    // { field: "email", headerName: "Email", flex: 1 },
-    // { field: "address", headerName: "Address", flex: 1 },
-    // { field: "city", headerName: "City", flex: 1 },
-    // { field: "zipCode", headerName: "ZipCode", flex: 1 },
-    // { field: "zipCode2", headerName: "ZipCode2", flex: 1 },
+  
   ];
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
   return (
     <Box m="20px">
       <Header title="INFORMAÇÕES ALUNOS" subtitle="Ficha de alunos ativos" />
@@ -222,6 +164,17 @@ const DadosAluno = () => {
           components={{ toolbar: GridToolbar }}
           getRowId={(row) => row.id}
         />
+          {dialogData && (
+        <CustomizedDialogs
+          open={true}
+          onClose={handleCloseDialog}
+          title={`Detalhes do ID ${dialogData.id}`}
+        >
+          
+           {`Nome: ${dialogData.dadosDoAluno.nomeDoAluno}`}
+        
+        </CustomizedDialogs>
+      )}
       </Box>
     </Box>
   );
