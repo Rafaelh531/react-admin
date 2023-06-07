@@ -1,4 +1,4 @@
-import { Box, Button, useTheme, } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataContacts } from "../../data/mockData";
@@ -7,9 +7,9 @@ import CustomizedDialogs from "./dialog";
 import RegistrationForm from "./formAddAluno";
 import { alunos } from "../../data/alunos";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import { useState } from 'react';
-import Modal from '@mui/material/Modal';
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { useState } from "react";
+import Modal from "@mui/material/Modal";
 import Typography from "@mui/material";
 
 const DadosAluno = () => {
@@ -34,8 +34,6 @@ const DadosAluno = () => {
   const handleCloseAnotherDialog = () => {
     setOpenAnotherDialog(false);
   };
-
-
 
   const columns = [
     //{ field: "id", headerName: "id", flex: 0.5 },
@@ -76,17 +74,39 @@ const DadosAluno = () => {
       headerAlign: "right", // Alinha o cabeçalho à direita
       align: "right", // Alinha o conteúdo da célula à direita
       renderCell: (params) => {
-        
         const handleOpen = () => {
           setOpen(true);
         };
-  
+
         const handleClose = () => {
           setOpen(false);
         };
         return (
           <Box>
-          <Button variant="outlined" color="primary"       style={{
+            <Button
+              onClick={handleOpenAnotherDialog}
+              variant="outlined"
+              color="primary"
+              style={{
+                border: "none",
+                borderRadius: "50%",
+                width: "36px",
+                height: "36px",
+                minWidth: "36px",
+                padding: 0,
+              }}
+            >
+              <VisibilityIcon />
+            </Button>
+            <CustomizedDialogs
+              open={openAnotherDialog}
+              onClose={handleCloseAnotherDialog}
+              title="103"
+            >
+              <RegistrationForm />
+            </CustomizedDialogs>
+
+            {/* <Button variant="outlined" color="primary"       style={{
             border: 'none',
             borderRadius: '50%',
             width: '36px',
@@ -95,8 +115,10 @@ const DadosAluno = () => {
             padding: 0,
           }}
           onClick={handleOpen}>
-            <VisibilityIcon />
+            
           </Button>
+          
+
           
 
           <Button variant="outlined" color="primary"       style={{
@@ -108,12 +130,12 @@ const DadosAluno = () => {
             padding: 0,
           }}>
           <ModeEditIcon />
-        </Button>
+        </Button> */}
           </Box>
         );
       },
     },
-   
+
     // { field: "registrarId", headerName: "Registar ID" },
     // {
     //   field: "name",
@@ -138,7 +160,7 @@ const DadosAluno = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
-  
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -147,24 +169,22 @@ const DadosAluno = () => {
       <Header title="INFORMAÇÕES ALUNOS" subtitle="Ficha de alunos ativos" />
 
       <Box display="flex" justifyContent="right">
+        <Button
+          onClick={handleOpenRegistration}
+          variant="contained"
+          style={{ backgroundColor: "pink", color: "white" }}
+        >
+          Adicionar Aluno
+        </Button>
 
-      <Button onClick={handleOpenRegistration} variant="contained" style={{ backgroundColor: 'pink', color: 'white' }}>
-        Adicionar Aluno
-      </Button>
-
-      {/* <Button onClick={handleOpenAnotherDialog} variant="contained" style={{ backgroundColor: 'green', color: 'white', marginLeft: '10px' }}>
-        Outro Diálogo
-      </Button> */}
-
-      <CustomizedDialogs open={openRegistration} onClose={handleCloseRegistration} title="ADICIONAR ALUNO">
-        <RegistrationForm />
-      </CustomizedDialogs>
-
-      {/* <CustomizedDialogs open={openAnotherDialog} onClose={handleCloseAnotherDialog} title="103">
-        AHAHA
-      </CustomizedDialogs> */}
-
-    </Box>
+        <CustomizedDialogs
+          open={openRegistration}
+          onClose={handleCloseRegistration}
+          title="ADICIONAR ALUNO"
+        >
+          <RegistrationForm />
+        </CustomizedDialogs>
+      </Box>
       <Box
         height="75hv"
         sx={{
