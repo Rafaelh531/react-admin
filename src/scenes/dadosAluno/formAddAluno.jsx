@@ -26,9 +26,13 @@ const RegistrationForm = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [age, setAge] = React.useState("");
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const [periodo, setPeriodo] = React.useState("");
+  const handlePeriodoChange = (event) => {
+    setPeriodo(event.target.value);
+  };
+  const [sexo, setSexo] = React.useState("");
+  const handleSexoChange = (event) => {
+    setSexo(event.target.value);
   };
 
   const [startDate, setStartDate] = React.useState(new Date());
@@ -39,34 +43,35 @@ const RegistrationForm = () => {
   const passwordRegExp =
     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
   const initialValues = {
-    name: "",
-    email: "",
-    phoneNumber: "",
-    password: "",
-    confirmPassword: "",
+    nomeCrianca: "",
+    turma: "",
+    periodo: "",
+    sexo: "",
   };
   const validationSchema = Yup.object().shape({
-    name: Yup.string().min(3, "It's too short").required("Required"),
-    email: Yup.string().email("Enter valid email").required("Required"),
+    nome: Yup.string().min(3, "Texto muito curto"),
+    email: Yup.string().email("Enter valid email"),
+    rg: Yup.number().typeError("Somente numeros"),
     // phoneNumber: Yup.number().typeError("Enter valid Phone number").required("Required"),
-    phoneNumber: Yup.string()
-      .matches(phoneRegExp, "Enter valid Phone number")
-      .required("Required"),
-    password: Yup.string()
-      .min(8, "Minimum characters should be 8")
-      .matches(
-        passwordRegExp,
-        "Password must have one upper, lower case, number, special symbol"
-      )
-      .required("Required"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password")], "Password not matches")
-      .required("Required"),
+    phoneNumber: Yup.string().matches(phoneRegExp, "Enter valid Phone number"),
   });
-  const onSubmit = (values, props) => {
-    alert(JSON.stringify(values), null, 2);
-    props.resetForm();
+  // const onSubmit = (values, props) => {
+  //   console.log(JSON.stringify(initialValues), null, 2);
+  //   //alert(JSON.stringify(values), null, 2);
+  //   props.resetForm();
+  // };
+
+  const onSubmit = (event) => {
+    console.log("Valores do formulário:", formValues);
   };
+
+  const [formValues, setFormValues] = React.useState(initialValues);
+
+  const handleChangeField = (event) => {
+    const { name, value } = event.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
   return (
     <Grid>
       <Paper elevation={0} padding="0px 0px 0px 0px" width="100px">
@@ -84,73 +89,71 @@ const RegistrationForm = () => {
                 gridTemplateColumns="repeat(12, minmax(0, 1fr))"
                 sx={{ gridColumn: "span 12" }}
               >
-                {/* <TextField label='Name' name="name" fullWidth value={props.values.name}
-                    onChange={props.handleChange} /> */}
-
                 {/* DADOS DA CRIANÇA */}
                 <Typography sx={{ gridColumn: "span 12" }}>
                   DADOS DA CRIANÇA
                 </Typography>
-                <Field
-                  as={TextField}
-                  name="name"
+                <TextField
+                  value={formValues.nomeCrianca}
+                  onChange={handleChangeField}
+                  name="nomeCrianca"
                   label="Nome Completo"
-                  fullWidth
-                  error={props.errors.name && props.touched.name}
-                  helperText={<ErrorMessage name="name" />}
+                  error={props.errors.nome && props.touched.nome}
+                  helperText={<ErrorMessage name="nome" />}
                   required
                   sx={{ gridColumn: "span 12" }}
                 />
 
-                {/* <TextField label='Email' name='email' type='Email' fullWidth 
-                    {...props.getFieldProps('email')}/> */}
-
                 <FormControl fullWidth sx={{ gridColumn: "span 4" }}>
-                  <InputLabel id="demo-simple-select-label">Turma</InputLabel>
+                  <InputLabel id="selectTurmaLabel">Turma</InputLabel>
                   <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={age}
-                    label="Age"
-                    onChange={handleChange}
+                    id="selectTurma"
+                    name="turma" // Defina o nome como "turma" para que o handleChangeTurma funcione corretamente
+                    label="Turma"
+                    value={formValues.turma} // Use o valor do estado para o Select
+                    onChange={handleChangeField} // Atualiza o valor no estado quando o usuário escolhe uma opção
                   >
-                    <MenuItem value={10}>INF1</MenuItem>
-                    <MenuItem value={20}>INF2</MenuItem>
-                    <MenuItem value={30}>BER</MenuItem>
+                    <MenuItem value={"INF1"}>INF1</MenuItem>
+                    <MenuItem value={"INF2"}>INF2</MenuItem>
+                    <MenuItem value={"BER"}>BER</MenuItem>
+                    <MenuItem value={"undefined"}></MenuItem>
                   </Select>
                 </FormControl>
 
                 <FormControl fullWidth sx={{ gridColumn: "span 4" }}>
-                  <InputLabel id="demo-simple-select-label">Período</InputLabel>
+                  <InputLabel id="selectPeriodoLabel">Período</InputLabel>
                   <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={age}
-                    label="Age"
-                    onChange={handleChange}
+                    id="periodo"
+                    label="Periodo"
+                    name="periodo"
+                    value={formValues.periodo} // Use o valor do estado para o Select
+                    onChange={handleChangeField} // Atualiza o valor no estado quando o usuário escolhe uma opção
                   >
-                    <MenuItem value={10}>VESPERTINO</MenuItem>
-                    <MenuItem value={20}>MATUTINO</MenuItem>
-                    <MenuItem value={30}>INTEGRAL</MenuItem>
+                    <MenuItem value={"VESPERTINO"}>VESPERTINO</MenuItem>
+                    <MenuItem value={"MATUTINO"}>MATUTINO</MenuItem>
+                    <MenuItem value={"INTEGRAL"}>INTEGRAL</MenuItem>
+                    <MenuItem value={"undefined"}></MenuItem>
                   </Select>
                 </FormControl>
 
                 <FormControl fullWidth sx={{ gridColumn: "span 4" }}>
-                  <InputLabel id="demo-simple-select-label">Sexo</InputLabel>
+                  <InputLabel id="selectSexoLabel">Sexo</InputLabel>
                   <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={age}
-                    label="Age"
-                    onChange={handleChange}
+                    id="sexo"
+                    label="Sexo"
+                    name="sexo"
+                    value={formValues.sexo} // Use o valor do estado para o Select
+                    onChange={handleChangeField} // Atualiza o valor no estado quando o usuário escolhe uma opção
                   >
-                    <MenuItem value={10}>MASCULINO</MenuItem>
-                    <MenuItem value={20}>FEMININO</MenuItem>
+                    <MenuItem value={"MASCULINO"}>MASCULINO</MenuItem>
+                    <MenuItem value={"FEMININO"}>FEMININO</MenuItem>
+                    <MenuItem value={"undefined"}></MenuItem>
                   </Select>
                 </FormControl>
 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer
+                    id="dataNascimentoCrianca"
                     components={["DatePicker"]}
                     sx={{ gridColumn: "span 5" }}
                   >
@@ -162,50 +165,40 @@ const RegistrationForm = () => {
                 <Typography sx={{ gridColumn: "span 12" }}>
                   DADOS DA MÃE
                 </Typography>
-                <Field
-                  as={TextField}
-                  name="name"
+                <TextField
+                  name="nomeMae"
                   label="Nome Completo"
-                  fullWidth
-                  error={props.errors.name && props.touched.name}
-                  helperText={<ErrorMessage name="name" />}
+                  error={props.errors.nome && props.touched.nome}
+                  helperText={<ErrorMessage name="rg" />}
                   required
                   sx={{ gridColumn: "span 12" }}
                 />
 
-                <Field
-                  as={TextField}
-                  name="name"
+                <TextField
+                  name="rgMae"
                   label="RG"
-                  fullWidth
-                  error={props.errors.name && props.touched.name}
-                  helperText={<ErrorMessage name="name" />}
-                  required
+                  error={props.errors.rg && props.touched.rg}
+                  helperText={<ErrorMessage name="rg" />}
                   sx={{ gridColumn: "span 4" }}
                 />
-                <Field
-                  as={TextField}
-                  name="name"
+                <TextField
+                  name="cpfMae"
                   label="CPF"
-                  fullWidth
-                  error={props.errors.name && props.touched.name}
-                  helperText={<ErrorMessage name="name" />}
-                  required
+                  error={props.errors.rg && props.touched.rg}
+                  helperText={<ErrorMessage name="rg" />}
                   sx={{ gridColumn: "span 4" }}
                 />
-                <Field
-                  as={TextField}
-                  name="phoneNumber"
+                <TextField
+                  name="celularMae"
                   label="Celular"
-                  fullWidth
                   error={props.errors.phoneNumber && props.touched.phoneNumber}
                   helperText={<ErrorMessage name="phoneNumber" />}
-                  required
                   sx={{ gridColumn: "span 4" }}
                 />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer
                     components={["DatePicker"]}
+                    name="dataNascimentoMae"
                     sx={{ gridColumn: "span 8" }}
                   >
                     <DatePicker label="Data de Nascimento" />
@@ -216,49 +209,38 @@ const RegistrationForm = () => {
                 <Typography sx={{ gridColumn: "span 12" }}>
                   DADOS DO PAI
                 </Typography>
-                <Field
-                  as={TextField}
-                  name="name"
+                <TextField
+                  name="nomePai"
                   label="Nome Completo"
-                  fullWidth
-                  error={props.errors.name && props.touched.name}
+                  error={props.errors.nome && props.touched.nome}
                   helperText={<ErrorMessage name="name" />}
-                  required
                   sx={{ gridColumn: "span 12" }}
                 />
 
-                <Field
-                  as={TextField}
-                  name="name"
+                <TextField
+                  name="rgPai"
                   label="RG"
-                  fullWidth
-                  error={props.errors.name && props.touched.name}
-                  helperText={<ErrorMessage name="name" />}
-                  required
+                  error={props.errors.rg && props.touched.rg}
+                  helperText={<ErrorMessage name="rg" />}
                   sx={{ gridColumn: "span 4" }}
                 />
-                <Field
-                  as={TextField}
-                  name="name"
+                <TextField
+                  name="cpfPai"
                   label="CPF"
-                  fullWidth
-                  error={props.errors.name && props.touched.name}
-                  helperText={<ErrorMessage name="name" />}
-                  required
+                  error={props.errors.rg && props.touched.rg}
+                  helperText={<ErrorMessage name="rg" />}
                   sx={{ gridColumn: "span 4" }}
                 />
-                <Field
-                  as={TextField}
-                  name="phoneNumber"
+                <TextField
+                  name="celularPai"
                   label="Celular"
-                  fullWidth
                   error={props.errors.phoneNumber && props.touched.phoneNumber}
                   helperText={<ErrorMessage name="phoneNumber" />}
-                  required
                   sx={{ gridColumn: "span 4" }}
                 />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer
+                    id="dataNascimentoPai"
                     components={["DatePicker"]}
                     sx={{ gridColumn: "span 6" }}
                   >
@@ -271,103 +253,53 @@ const RegistrationForm = () => {
                   ENDEREÇO/CONTATO
                 </Typography>
 
-                <Field
-                  as={TextField}
-                  name="name"
+                <TextField
+                  name="rua"
                   label="Rua"
-                  fullWidth
-                  error={props.errors.name && props.touched.name}
-                  helperText={<ErrorMessage name="name" />}
-                  required
                   sx={{ gridColumn: "span 10" }}
                 />
-                <Field
-                  as={TextField}
-                  name="name"
+                <TextField
+                  name="numeroCasa"
                   label="Numero"
-                  fullWidth
-                  error={props.errors.name && props.touched.name}
-                  helperText={<ErrorMessage name="name" />}
-                  required
                   sx={{ gridColumn: "span 2" }}
                 />
-                <Field
-                  as={TextField}
-                  name="name"
+                <TextField
+                  name="complementoCasa"
                   label="Complemento"
-                  fullWidth
-                  error={props.errors.name && props.touched.name}
-                  helperText={<ErrorMessage name="name" />}
-                  required
                   sx={{ gridColumn: "span 6" }}
                 />
-                <Field
-                  as={TextField}
-                  name="name"
+                <TextField
+                  name="bairro"
                   label="Bairro"
-                  fullWidth
-                  error={props.errors.name && props.touched.name}
-                  helperText={<ErrorMessage name="name" />}
-                  required
                   sx={{ gridColumn: "span 6" }}
                 />
-                <Field
-                  as={TextField}
-                  name="phoneNumber"
+                <TextField
+                  name="telResidencial"
                   label="Tel. Residencial"
-                  fullWidth
-                  error={props.errors.phoneNumber && props.touched.phoneNumber}
-                  helperText={<ErrorMessage name="phoneNumber" />}
-                  required
                   sx={{ gridColumn: "span 6" }}
                 />
-                <Field
-                  as={TextField}
-                  name="phoneNumber"
+                <TextField
+                  name="telComercial"
                   label="Tel. Comercial"
-                  fullWidth
-                  error={props.errors.phoneNumber && props.touched.phoneNumber}
-                  helperText={<ErrorMessage name="phoneNumber" />}
-                  required
                   sx={{ gridColumn: "span 6" }}
                 />
-                <Field
-                  as={TextField}
-                  name="phoneNumber"
+                <TextField
+                  name="telRecado"
                   label="Tel. Recado"
-                  fullWidth
-                  error={props.errors.phoneNumber && props.touched.phoneNumber}
-                  helperText={<ErrorMessage name="phoneNumber" />}
-                  required
                   sx={{ gridColumn: "span 6" }}
                 />
-                <Field
-                  as={TextField}
-                  name="name"
+                <TextField
+                  name="falarCom"
                   label="Falar com"
-                  fullWidth
-                  error={props.errors.name && props.touched.name}
-                  helperText={<ErrorMessage name="name" />}
-                  required
                   sx={{ gridColumn: "span 6" }}
                 />
-                <Field
-                  as={TextField}
-                  name="name"
+                <TextField
+                  name="email"
                   label="Email"
-                  fullWidth
-                  error={props.errors.name && props.touched.name}
-                  helperText={<ErrorMessage name="name" />}
-                  required
                   sx={{ gridColumn: "span 12" }}
                 />
               </Box>
-              <Button
-                type="submit"
-                marginTop="10px"
-                variant="contained"
-                color="primary"
-              >
+              <Button type="submit" variant="contained" color="primary">
                 CADASTRAR
               </Button>
             </Form>

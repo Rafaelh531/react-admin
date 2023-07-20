@@ -16,6 +16,10 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import PhoneIcon from '@mui/icons-material/Phone';
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import LocalAtmIcon from '@mui/icons-material/LocalAtm';
+import PaidIcon from '@mui/icons-material/Paid';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -109,6 +113,12 @@ const Sidebar = () => {
             
             <Item  title="Alunos"  to="/dadosaluno" icon={<ContactsOutlinedIcon/>} selected={selected} setSelected={setSelected}/>
             <Item  title="Professoras"  to="/team" icon={<PeopleOutlinedIcon/>} selected={selected} setSelected={setSelected}/>
+            <Item  title="Contatos"  to="/contatos" icon={<PhoneIcon/>} selected={selected} setSelected={setSelected}/>
+            <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Financeiro</Typography>
+            <Item  title="Mensalidades"  to="/contatos" icon={<PaidIcon/>} selected={selected} setSelected={setSelected}/>
+            <Item  title="Pagamentos"  to="/contatos" icon={<LocalAtmIcon/>} selected={selected} setSelected={setSelected}/>
+            <Item  title="Balanço"  to="/contatos" icon={<PointOfSaleIcon/>} selected={selected} setSelected={setSelected}/>
+            <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Organizacional</Typography>
             {/* <Item  title="Invoices Balances"  to="/invoices" icon={<ReceiptOutlinedIcon/>} selected={selected} setSelected={setSelected}/> */}
             {/* <Typography variant="h6" color={colors.grey[300]} sx={{m: "15px 0 5px 20px"}}>Pages</Typography> */}
             {/* <Item  title="Profile Form"  to="/form" icon={<PersonOutlinedIcon/>} selected={selected} setSelected={setSelected}/> */}

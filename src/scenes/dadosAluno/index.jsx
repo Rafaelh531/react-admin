@@ -15,8 +15,6 @@ const DadosAluno = () => {
   const colors = tokens(theme.palette.mode);
 
   const [openRegistration, setOpenRegistration] = useState(false);
-;
-
   const [dialogData, setDialogData] = useState(null);
 
   const handleOpenDialog = (rowData) => {
@@ -27,7 +25,6 @@ const DadosAluno = () => {
     setDialogData(null);
   };
 
-
   const handleOpenRegistration = () => {
     setOpenRegistration(true);
   };
@@ -35,8 +32,6 @@ const DadosAluno = () => {
   const handleCloseRegistration = () => {
     setOpenRegistration(false);
   };
-
-
 
   const columns = [
     //{ field: "id", headerName: "id", flex: 0.5 },
@@ -70,13 +65,13 @@ const DadosAluno = () => {
       flex: 0.5,
       valueGetter: (data) => data.row.pai.nomeDoPai,
     },
-    
+
     {
-      field: 'actions',
-      headerName: '',
+      field: "actions",
+      headerName: "",
       width: 120,
-      headerAlign: 'right',
-      align: 'right',
+      headerAlign: "right",
+      align: "right",
       renderCell: (params) => {
         const rowData = params.row;
 
@@ -90,11 +85,11 @@ const DadosAluno = () => {
             variant="outlined"
             color="primary"
             style={{
-              border: 'none',
-              borderRadius: '50%',
-              width: '36px',
-              height: '36px',
-              minWidth: '36px',
+              border: "none",
+              borderRadius: "50%",
+              width: "36px",
+              height: "36px",
+              minWidth: "36px",
               padding: 0,
             }}
           >
@@ -103,7 +98,6 @@ const DadosAluno = () => {
         );
       },
     },
-  
   ];
 
   return (
@@ -161,20 +155,18 @@ const DadosAluno = () => {
         <DataGrid
           rows={alunos}
           columns={columns}
-          components={{ toolbar: GridToolbar }}
+          slots={{ toolbar: GridToolbar }}
           getRowId={(row) => row.id}
         />
-          {dialogData && (
-        <CustomizedDialogs
-          open={true}
-          onClose={handleCloseDialog}
-          title={`Detalhes do ID ${dialogData.id}`}
-        >
-          
-           {`Nome: ${dialogData.dadosDoAluno.nomeDoAluno}`}
-        
-        </CustomizedDialogs>
-      )}
+        {dialogData && (
+          <CustomizedDialogs
+            open={true}
+            onClose={handleCloseDialog}
+            title={`Detalhes do ID ${dialogData.id}`}
+          >
+            {`Nome: ${dialogData.dadosDoAluno.nomeDoAluno}`}
+          </CustomizedDialogs>
+        )}
       </Box>
     </Box>
   );
