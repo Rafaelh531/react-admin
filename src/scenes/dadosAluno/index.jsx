@@ -8,6 +8,7 @@ import RegistrationForm from "./formAddAluno";
 import { alunos } from "../../data/alunos";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { useState } from "react";
 
 const DadosAluno = () => {
@@ -76,29 +77,79 @@ const DadosAluno = () => {
         const rowData = params.row;
 
         const handleOpen = () => {
+          console.log(rowData)
           handleOpenDialog(rowData);
         };
 
         return (
-          <Button
-            onClick={handleOpen}
-            variant="outlined"
-            color="primary"
-            style={{
-              border: "none",
-              borderRadius: "50%",
-              width: "36px",
-              height: "36px",
-              minWidth: "36px",
-              padding: 0,
-            }}
-          >
-            <VisibilityIcon />
-          </Button>
+          <Box>
+            <Button
+              onClick={handleOpen}
+              variant="outlined"
+              color="primary"
+              style={{
+                border: "none",
+                borderRadius: "50%",
+                width: "36px",
+                height: "36px",
+                minWidth: "36px",
+                padding: 0,
+              }}
+            >
+              <VisibilityIcon />
+            </Button>
+            <Button
+              onClick={handleOpenRegistration}
+              variant="outlined"
+              color="primary"
+              style={{
+                border: "none",
+                borderRadius: "50%",
+                width: "36px",
+                height: "36px",
+                minWidth: "36px",
+                padding: 0,
+              }}
+            >
+              <ModeEditIcon />
+            </Button>
+          </Box>
         );
       },
     },
   ];
+
+  const initialValuess = {
+    nomeCrianca: "allan",
+    turma: "INF1",
+    periodo: "",
+    sexo: "",
+    dataNascimentoCrianca: "",
+    nomeMae: "",
+    rgMae: "",
+    cpfMae: "",
+    celularMae: "",
+    dataNascimentoMae: "",
+    nomePai: "",
+    rgPai: "",
+    cpfPai: "",
+    celularPai: "",
+    dataNascimentoPai: "",
+    rua: "",
+    numeroCasa: "",
+    complementoCasa: "",
+    bairro: "",
+    telResidencial: "",
+    telComercial: "",
+    telRecado: "",
+    falarCom: "",
+    email: "",
+  };
+
+  const setInitialValues  = (data) => {
+    initialValuess.nomeCrianca = data.dadosDoAluno.nomeDoAluno;
+    
+  };
 
   return (
     <Box m="20px">
@@ -118,7 +169,7 @@ const DadosAluno = () => {
           onClose={handleCloseRegistration}
           title="ADICIONAR ALUNO"
         >
-          <RegistrationForm />
+          <RegistrationForm initialValues = {initialValuess}/>
         </CustomizedDialogs>
       </Box>
       <Box

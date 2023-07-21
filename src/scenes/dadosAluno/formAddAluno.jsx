@@ -22,32 +22,15 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-const RegistrationForm = () => {
+const RegistrationForm = ( { initialValues }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
-  const [periodo, setPeriodo] = React.useState("");
-  const handlePeriodoChange = (event) => {
-    setPeriodo(event.target.value);
-  };
-  const [sexo, setSexo] = React.useState("");
-  const handleSexoChange = (event) => {
-    setSexo(event.target.value);
-  };
-
-  const [startDate, setStartDate] = React.useState(new Date());
 
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const phoneRegExp = /^[2-9]{2}[0-9]{8}/;
-  const passwordRegExp =
-    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
-  const initialValues = {
-    nomeCrianca: "",
-    turma: "",
-    periodo: "",
-    sexo: "",
-  };
+
+  
   const validationSchema = Yup.object().shape({
     nome: Yup.string().min(3, "Texto muito curto"),
     email: Yup.string().email("Enter valid email"),
@@ -66,10 +49,14 @@ const RegistrationForm = () => {
   };
 
   const [formValues, setFormValues] = React.useState(initialValues);
-
+  // console.log(formValues)
   const handleChangeField = (event) => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
+  };
+
+  const handleDateChange = (fieldName, date) => {
+    setFormValues({ ...formValues, [fieldName]: date });
   };
 
   return (
@@ -102,6 +89,7 @@ const RegistrationForm = () => {
                   helperText={<ErrorMessage name="nome" />}
                   required
                   sx={{ gridColumn: "span 12" }}
+                  disabled // Torna o campo não editável
                 />
 
                 <FormControl fullWidth sx={{ gridColumn: "span 4" }}>
@@ -153,11 +141,20 @@ const RegistrationForm = () => {
 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer
-                    id="dataNascimentoCrianca"
                     components={["DatePicker"]}
                     sx={{ gridColumn: "span 5" }}
                   >
-                    <DatePicker label="Data de Nascimento" />
+                    <DatePicker
+                      label="Data de Nascimento"
+                      id="dataNascimentoCrianca"
+                      name="dataNascimentoCrianca"
+                      value={formValues.dataNascimentoCrianca}
+                      onChange={(date) =>
+                        handleDateChange("dataNascimentoCrianca", date)
+                      }
+                      textField={(params) => <TextField {...params} />}
+                      // Use o valor do estado para o Select
+                    />
                   </DemoContainer>
                 </LocalizationProvider>
 
@@ -169,9 +166,10 @@ const RegistrationForm = () => {
                   name="nomeMae"
                   label="Nome Completo"
                   error={props.errors.nome && props.touched.nome}
-                  helperText={<ErrorMessage name="rg" />}
-                  required
+                  helperText={<ErrorMessage name="nome" />}
+                  onChange={handleChangeField}
                   sx={{ gridColumn: "span 12" }}
+                  value={formValues.nomeMae}
                 />
 
                 <TextField
@@ -180,6 +178,8 @@ const RegistrationForm = () => {
                   error={props.errors.rg && props.touched.rg}
                   helperText={<ErrorMessage name="rg" />}
                   sx={{ gridColumn: "span 4" }}
+                  onChange={handleChangeField}
+                  value={formValues.rgMae}
                 />
                 <TextField
                   name="cpfMae"
@@ -187,6 +187,8 @@ const RegistrationForm = () => {
                   error={props.errors.rg && props.touched.rg}
                   helperText={<ErrorMessage name="rg" />}
                   sx={{ gridColumn: "span 4" }}
+                  onChange={handleChangeField}
+                  value={formValues.cpfMae}
                 />
                 <TextField
                   name="celularMae"
@@ -194,14 +196,25 @@ const RegistrationForm = () => {
                   error={props.errors.phoneNumber && props.touched.phoneNumber}
                   helperText={<ErrorMessage name="phoneNumber" />}
                   sx={{ gridColumn: "span 4" }}
+                  onChange={handleChangeField}
+                  value={formValues.celularMae}
                 />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer
                     components={["DatePicker"]}
-                    name="dataNascimentoMae"
                     sx={{ gridColumn: "span 8" }}
                   >
-                    <DatePicker label="Data de Nascimento" />
+                    <DatePicker
+                      label="Data de Nascimento"
+                      id="dataNascimentoMae"
+                      name="dataNascimentoMae"
+                      value={formValues.dataNascimentoMae}
+                      onChange={(date) =>
+                        handleDateChange("dataNascimentoMae", date)
+                      }
+                      textField={(params) => <TextField {...params} />}
+                      // Use o valor do estado para o Select
+                    />
                   </DemoContainer>
                 </LocalizationProvider>
 
@@ -215,6 +228,8 @@ const RegistrationForm = () => {
                   error={props.errors.nome && props.touched.nome}
                   helperText={<ErrorMessage name="name" />}
                   sx={{ gridColumn: "span 12" }}
+                  onChange={handleChangeField}
+                  value={formValues.nomePai}
                 />
 
                 <TextField
@@ -223,6 +238,8 @@ const RegistrationForm = () => {
                   error={props.errors.rg && props.touched.rg}
                   helperText={<ErrorMessage name="rg" />}
                   sx={{ gridColumn: "span 4" }}
+                  onChange={handleChangeField}
+                  value={formValues.rgPai}
                 />
                 <TextField
                   name="cpfPai"
@@ -230,6 +247,8 @@ const RegistrationForm = () => {
                   error={props.errors.rg && props.touched.rg}
                   helperText={<ErrorMessage name="rg" />}
                   sx={{ gridColumn: "span 4" }}
+                  onChange={handleChangeField}
+                  value={formValues.cpfPai}
                 />
                 <TextField
                   name="celularPai"
@@ -237,14 +256,24 @@ const RegistrationForm = () => {
                   error={props.errors.phoneNumber && props.touched.phoneNumber}
                   helperText={<ErrorMessage name="phoneNumber" />}
                   sx={{ gridColumn: "span 4" }}
+                  onChange={handleChangeField}
+                  value={formValues.celularPai}
                 />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer
-                    id="dataNascimentoPai"
                     components={["DatePicker"]}
                     sx={{ gridColumn: "span 6" }}
                   >
-                    <DatePicker label="Data de Nascimento" />
+                    <DatePicker
+                      label="Data de Nascimento"
+                      id="dataNascimentoPai"
+                      name="dataNascimentoPai"
+                      value={formValues.dataNascimentoPai}
+                      onChange={(date) =>
+                        handleDateChange("dataNascimentoPai", date)
+                      }
+                      textField={(params) => <TextField {...params} />}
+                    />
                   </DemoContainer>
                 </LocalizationProvider>
 
@@ -257,46 +286,64 @@ const RegistrationForm = () => {
                   name="rua"
                   label="Rua"
                   sx={{ gridColumn: "span 10" }}
+                  onChange={handleChangeField}
+                  value={formValues.rua}
                 />
                 <TextField
                   name="numeroCasa"
                   label="Numero"
                   sx={{ gridColumn: "span 2" }}
+                  onChange={handleChangeField}
+                  value={formValues.numeroCasa}
                 />
                 <TextField
                   name="complementoCasa"
                   label="Complemento"
                   sx={{ gridColumn: "span 6" }}
+                  onChange={handleChangeField}
+                  value={formValues.complementoCasa}
                 />
                 <TextField
                   name="bairro"
                   label="Bairro"
                   sx={{ gridColumn: "span 6" }}
+                  onChange={handleChangeField}
+                  value={formValues.bairro}
                 />
                 <TextField
                   name="telResidencial"
                   label="Tel. Residencial"
                   sx={{ gridColumn: "span 6" }}
+                  onChange={handleChangeField}
+                  value={formValues.telResidencial}
                 />
                 <TextField
                   name="telComercial"
                   label="Tel. Comercial"
                   sx={{ gridColumn: "span 6" }}
+                  onChange={handleChangeField}
+                  value={formValues.telComercial}
                 />
                 <TextField
                   name="telRecado"
                   label="Tel. Recado"
                   sx={{ gridColumn: "span 6" }}
+                  onChange={handleChangeField}
+                  value={formValues.telRecado}
                 />
                 <TextField
                   name="falarCom"
                   label="Falar com"
                   sx={{ gridColumn: "span 6" }}
+                  onChange={handleChangeField}
+                  value={formValues.falarCom}
                 />
                 <TextField
                   name="email"
                   label="Email"
                   sx={{ gridColumn: "span 12" }}
+                  onChange={handleChangeField}
+                  value={formValues.email}
                 />
               </Box>
               <Button type="submit" variant="contained" color="primary">

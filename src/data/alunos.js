@@ -5,10 +5,10 @@ export const alunos = [
     id:1,
     "dadosDoAluno": {
       "nomeDoAluno": "Maria Santos",
-      "turma": "B",
-      "periodo": "Tarde",
+      "turma": "INF1",
+      "periodo": "VESPERTINO",
       "dataDeNascimento": "10/05/2003",
-      "sexo": "Feminino"
+      "sexo": "FEMININO"
     },
     "mae": {
       "nomeDaMae": "Ana Santos",
@@ -63,10 +63,10 @@ export const alunos = [
     id:2,
     "dadosDoAluno": {
       "nomeDoAluno": "João Silva",
-      "turma": "A",
-      "periodo": "Manhã",
+      "turma": "INF2",
+      "periodo": "VESPERTINO",
       "dataDeNascimento": "25/09/2005",
-      "sexo": "Masculino"
+      "sexo": "MASCULINO"
     },
     "mae": {
       "nomeDaMae": "Maria Silva",
@@ -121,10 +121,10 @@ export const alunos = [
     id:3,
     "dadosDoAluno": {
       "nomeDoAluno": "Ana Oliveira",
-      "turma": "C",
-      "periodo": "Manhã",
+      "turma": "INF1",
+      "periodo": "INTEGRAL",
       "dataDeNascimento": "12/03/2006",
-      "sexo": "Feminino"
+      "sexo": "FEMININO"
     },
     "mae": {
       "nomeDaMae": "Carolina Oliveira",
